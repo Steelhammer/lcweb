@@ -1,0 +1,18 @@
+input.ui-slider-input {
+    display:none !important; 
+}
+
+div.ui-slider {
+  width: 93%;
+}
+
+.dimslide{
+ padding-top:15px;
+ padding-bottom:5px;
+}
+
+[select]
+{
+  padding-bottom:10px;
+}
+

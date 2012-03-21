@@ -1,0 +1,35 @@
+lightcontrol web installation
+-----------------------------------
+
+make a link from your web structure to .../lcweb
+
+edit the first line of .../web/lightcontrol/server-com.js
+change "http://www.your-server.com/lcweb/lcapi/v1/lcapi.php" to match the location on your server.
+
+access the lightcontrol control page from <your-server-location>/lcweb/lightcontrol
+
+Note the hidden file: .htaccess in .../web/lcapi/v1
+
+
+apache setup
+------------
+rewrite modoule must be active
+
+sudo a2enmod rewrite
+
+---AllowOverride all --- must be set for the folder containing the web api
+
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /var/www
+  ...
+	<Directory /var/www/lcweb/>
+		Options FollowSymLinks
+		AllowOverride all
+	</Directory>
+	...
+
+</VirtualHost>
+
+

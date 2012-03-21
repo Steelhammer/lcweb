@@ -1,0 +1,128 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<title>Lights</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+<link rel="stylesheet" href="style.css" />
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+<script type="text/javascript" src="server-com.js"></script>
+<script> $(document).ready(function () { InitPage(); }); </script>
+</head>
+
+<body>
+
+<div data-role="page" id="thepage">
+
+
+	<div data-role="header" onclick="GetReceiverStatus()">
+		<h1>Light control</h1>
+	</div><!-- /header -->
+
+  <div data-role="content" id="mainpanel"> 
+  </div><!-- /mainpanel -->
+  
+  <div data-role="footer">
+		<h4></h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="setpage">
+
+	<div data-role="header">
+		<h1>Settings</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" id="settingspanel" class="ui-body ui-body-b">	
+			
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4></h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<div data-role="dialog" id="addreceiverpage">
+
+	<div data-role="header">
+		<h1>Add receiver</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" id="addpanel" class="ui-body ui-body-b">	
+	  <label for="addrecname">Receiver name:</label>
+    <input type="text" id="addrecname" value=""  />		
+       
+    <div data-role="fieldcontain" >
+      <label for="addrecisdimmer">Dimmer:</label>
+      <select name="addslider" id="addrecisdimmer" data-role="slider">
+        <option value="1">Yes</option>
+	      <option value="0">No</option>
+      </select>
+    </div>
+          
+    <a href="#" data-role="button" data-inline="true" data-rel="back">Cancel</a>
+    <a href="#" data-role="button" data-inline="true" data-rel="back" onclick="DoAddReceiver()">OK</a>
+			
+			
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4></h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<div data-role="dialog" id="editreceiverpage">
+
+	<div data-role="header">
+		<h1>Edit receiver</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" id="settingspanel" class="ui-body ui-body-b">	
+	  <label for="editrecname">Receiver name:</label>
+    <input type="text" id="editrecname" value=""  />		
+    
+    <div data-role="fieldcontain">
+    <label for="recisdimmer">Dimmer:</label>
+      <select name="slider" id="recisdimmer" data-role="slider">
+        <option value="1">Yes</option>
+	      <option value="0">No</option>
+      </select>
+    </div>
+      
+    <a href="#" data-role="button" data-inline="true" data-rel="back">Cancel</a>
+    <a href="#" data-role="button" data-inline="true" data-rel="back" onclick="DoEditReceiver()">OK</a>
+			
+			
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4></h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="dimmerpage">
+
+	<div data-role="header">
+		<h1>Dimmer</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" id="dimmerpanel" class="ui-body ui-body-b">
+	</div><!-- /content -->
+
+  <div data-role="content" class="ui-body ui-body-b">
+    <a href="#" data-role="button" data-inline="true" onclick="FromDimToMain()">Done</a>  
+  </div>
+
+
+	<div data-role="footer">
+		<h4></h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+</body>
+</html>
