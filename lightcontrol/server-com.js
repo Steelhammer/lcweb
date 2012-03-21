@@ -10,7 +10,7 @@ $("#mainpanel").live("swipeleft", function(){
 
 
 
-  $("#settingspanel").live("swiperight", function(){
+$("#settingspanel").live("swiperight", function(){
                         $.mobile.changePage("#thepage", {
                                                          transition: "slide",
                                                          reverse: true
