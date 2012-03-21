@@ -20,15 +20,15 @@ sudo a2enmod rewrite
 ---AllowOverride all --- must be set for the folder containing the web api
 
 <VirtualHost *:80>
-	ServerAdmin webmaster@localhost
+  ServerAdmin webmaster@localhost
 
-	DocumentRoot /var/www
+  DocumentRoot /var/www
   ...
 	<Directory /var/www/lcweb/>
-		Options FollowSymLinks
-		AllowOverride all
-	</Directory>
-	...
+    Options FollowSymLinks
+    AllowOverride all
+  </Directory>
+  ...
 
 </VirtualHost>
 
