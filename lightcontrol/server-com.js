@@ -4,31 +4,31 @@ var t;
 
 $("#mainpanel").live("swipeleft", function(){
                         
-			                  $.mobile.changePage("#setpage", 'slide');
-			                  $("#settingspanel").trigger('create');
-	                     });
+                        $.mobile.changePage("#setpage", 'slide');
+                        $("#settingspanel").trigger('create');
+                       });
 
 
 
   $("#settingspanel").live("swiperight", function(){
-			                  $.mobile.changePage("#thepage", {
-	                                                       transition: "slide",
-	                                                       reverse: true
+                        $.mobile.changePage("#thepage", {
+                                                         transition: "slide",
+                                                         reverse: true
                                                          });
-	                     });
+                       });
 
 $("#mainpanel").live("swiperight", function(){
                         GetDimmerStatus();
-			                  $.mobile.changePage("#dimmerpage", {
-	                                                       transition: "slide",
-	                                                       reverse: true
+                        $.mobile.changePage("#dimmerpage", {
+                                                         transition: "slide",
+                                                         reverse: true
                                                          });
-			                  $("#dimmerpage").trigger('create');
-			                  
-	                     });
-	                     
-	                     
-	                     
+                        $("#dimmerpage").trigger('create');
+                        
+                       });
+                       
+                       
+                       
 
 function InitPage()
 {
@@ -172,8 +172,8 @@ function Dimmer(btnid)
 
 
   $.mobile.changePage("#dimmerpage", {
-	                                            transition: "pop"
-	                                 
+                                              transition: "pop"
+                                   
                                             });
   //$('#dimmerslider').slider("refresh");
 
@@ -323,8 +323,8 @@ function EditReceiver(thisrec)
   //console.log($("#editreceiverpage").data('recId'));
   
   $.mobile.changePage("#editreceiverpage", {
-	                                            transition: "pop"
-	                                 
+                                              transition: "pop"
+                                   
                                             });
   $('#recisdimmer').slider("refresh");
 }
@@ -364,8 +364,8 @@ function AddReceiver()
   $("#addrecisdimmer").val('0');
   
   $.mobile.changePage("#addreceiverpage", {
-	                                            transition: "pop"
-	                                 
+                                              transition: "pop"
+                                   
                                             });
                                             
   $('#addrecisdimmer').slider("refresh");
