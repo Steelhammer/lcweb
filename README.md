@@ -22,7 +22,8 @@ lightcontrol-web-install.txt contains instructions for getting started.
 
 ## Other
 
-This is a project under initial development.
+This is a project under initial development.  
+
 * There is no documentation
 
 * No timer control in the lightcontrol web page.
