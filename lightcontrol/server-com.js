@@ -386,9 +386,6 @@ function AddTimer()
                                             });
 }
 
-
-//////////////
-
 function GetTimers(receiverid)
 {          
   var mainP = document.getElementById("timerpanel");    
@@ -397,32 +394,31 @@ function GetTimers(receiverid)
           type: 'GET',
           url: serverURL+'timer/'+receiverid,
           //data: data,
-          success: function(data) {GetTimersResponse(data);},
+          success: function(data) {GetTimersResponse(data, receiverid);},
           dataType: 'json'
          });
 }
 
-function GetTimersResponse(data)
+function GetTimersResponse(data, receiverid)
 {
   //console.log(data);
-  //var mainP = document.getElementById("timerpanel");    
-  //while ( mainP.hasChildNodes() ) { mainP.removeChild(mainP.firstChild); }
   
   $.each(data, function() {
     console.log('Creating timer');
   
     var theNav = document.createElement("div");
-    theNav.setAttribute('data-role', 'navbar');  
+    theNav.setAttribute('data-role', 'navbar');
     var ulist = document.createElement("ul");
     ulist.id='navbar'+this.id;
     ulist.timid=this.id;
+    console.log(this.id);
     theNav.appendChild(ulist);
     var idstr='#'+ulist.id;
     $(ulist).append('<li><a href="#">' + this.ontime + '</a> </li>'); 
     $(ulist).append('<li><a href="#">' + this.offtime + '</a> </li>');
     $(ulist).append('<li><a href="#">' + this.days + '</a> </li>');
     $(ulist).append('<li><a href="#">' + this.dimlevel + '</a> </li>');
-    $(ulist).append('<li><a href="#">Delete</a> </li>');
+    $(ulist).append('<li><a href="#" onClick="DeleteTimer('+this.id+','+receiverid+')">Delete</a> </li>');
     $("#timerpanel").append(theNav);     
     
   });
@@ -430,16 +426,11 @@ function GetTimersResponse(data)
   
   $("#timerpanel").trigger('create');
 
-  if ($('.ui-page-active').attr('id') == 'timerpage')
-  {
-      
-  }
+  //if ($('.ui-page-active').attr('id') == 'timerpage')
+  //{
+  //    
+  //}
 }
-
-
-
-/////////////
-
 
 function ViewTimer(recid)
 {
@@ -458,6 +449,32 @@ function FromTimerToSettings()
                                    
   GetReceiverSettings();
 }
+
+
+function DeleteTimer(timid, receiverid)
+{
+  if(confirm("Are you sure?"))
+  {
+    $.ajax({
+          type: 'DELETE',
+          url: serverURL+'timer/'+timid,
+          success: function(data) {DeleteTimerResponse(data, receiverid);},
+          error: function(jqXHR, textStatus, errorThrown) {alert(errorThrown);},
+          dataType: 'json'
+         });
+  }
+  else
+  {
+    GetTimers(receiverid);
+  }
+}
+
+function DeleteTimerResponse(data, receiverid)
+{
+  GetTimers(receiverid);
+}
+
+
 
 
 function DoAddReceiver()
