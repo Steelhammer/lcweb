@@ -1,4 +1,6 @@
-var serverURL = "http://www.your-server.com/lcweb/lcapi/v1/lcapi.php";
+//var serverURL = "http://www.your-server.com/lcweb/lcapi/v1/lcapi.php";
+//var serverURL = "http://localhost/lcweb/lcapi/v1/";
+var serverURL = "http://192.168.0.5/lcweb/lcapi/v1/";
 
 var t;
 
@@ -35,6 +37,10 @@ function InitPage()
   GetReceivers();
   GetDimmers();
   GetReceiverSettings();
+  
+   $('#addtimeron').scroller({ preset: 'time', ampm: false, timeFormat: 'HH:ii', theme: 'sense-ui' });
+   $('#addtimeroff').scroller({ preset: 'time', ampm: false, timeFormat: 'HH:ii', theme: 'sense-ui' });
+  
 }
 
 function UpdateReceivers()
@@ -274,7 +280,7 @@ function SelectSetting()
     EditReceiver(this);
     break;
   case "timer":
-    //execute code block
+    ViewTimer(this.recid);
     break;
   case "learn":
     LearnReceiver(this.recid);
@@ -369,6 +375,88 @@ function AddReceiver()
                                             });
                                             
   $('#addrecisdimmer').slider("refresh");
+}
+
+
+function AddTimer()
+{
+   $.mobile.changePage("#addtimerpage", {
+                                              transition: "pop"
+                                   
+                                            });
+}
+
+
+//////////////
+
+function GetTimers(receiverid)
+{          
+  var mainP = document.getElementById("timerpanel");    
+  while ( mainP.hasChildNodes() ) { mainP.removeChild(mainP.firstChild); }
+    $.ajax({
+          type: 'GET',
+          url: serverURL+'timer/'+receiverid,
+          //data: data,
+          success: function(data) {GetTimersResponse(data);},
+          dataType: 'json'
+         });
+}
+
+function GetTimersResponse(data)
+{
+  //console.log(data);
+  //var mainP = document.getElementById("timerpanel");    
+  //while ( mainP.hasChildNodes() ) { mainP.removeChild(mainP.firstChild); }
+  
+  $.each(data, function() {
+    console.log('Creating timer');
+  
+    var theNav = document.createElement("div");
+    theNav.setAttribute('data-role', 'navbar');  
+    var ulist = document.createElement("ul");
+    ulist.id='navbar'+this.id;
+    ulist.timid=this.id;
+    theNav.appendChild(ulist);
+    var idstr='#'+ulist.id;
+    $(ulist).append('<li><a href="#">' + this.ontime + '</a> </li>'); 
+    $(ulist).append('<li><a href="#">' + this.offtime + '</a> </li>');
+    $(ulist).append('<li><a href="#">' + this.days + '</a> </li>');
+    $(ulist).append('<li><a href="#">' + this.dimlevel + '</a> </li>');
+    $(ulist).append('<li><a href="#">Delete</a> </li>');
+    $("#timerpanel").append(theNav);     
+    
+  });
+  
+  
+  $("#timerpanel").trigger('create');
+
+  if ($('.ui-page-active').attr('id') == 'timerpage')
+  {
+      
+  }
+}
+
+
+
+/////////////
+
+
+function ViewTimer(recid)
+{
+  GetTimers(recid);
+  $.mobile.changePage("#timerpage", {
+                                              transition: "pop"
+                                   
+                                            }); 
+}
+
+function FromTimerToSettings()
+{
+  $.mobile.changePage("#setpage", {
+                                   transition: "pop"
+                                   });
+                                   
+  GetReceiverSettings();
 }
 
 
