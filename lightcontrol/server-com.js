@@ -1,5 +1,4 @@
 //var serverURL = "http://www.your-server.com/lcweb/lcapi/v1/lcapi.php";
-//var serverURL = "http://localhost/lcweb/lcapi/v1/";
 var serverURL = "http://192.168.0.5/lcweb/lcapi/v1/";
 
 var t;
@@ -387,7 +386,8 @@ function AddTimer()
 }
 
 function GetTimers(receiverid)
-{          
+{
+  SetTimerTitle(receiverid);      
   var mainP = document.getElementById("timerpanel");    
   while ( mainP.hasChildNodes() ) { mainP.removeChild(mainP.firstChild); }
     $.ajax({
@@ -404,14 +404,14 @@ function GetTimersResponse(data, receiverid)
   //console.log(data);
   
   $.each(data, function() {
-    console.log('Creating timer');
+    //console.log('Creating timer');
   
     var theNav = document.createElement("div");
     theNav.setAttribute('data-role', 'navbar');
     var ulist = document.createElement("ul");
     ulist.id='navbar'+this.id;
     ulist.timid=this.id;
-    console.log(this.id);
+    //console.log(this.id);
     theNav.appendChild(ulist);
     var idstr='#'+ulist.id;
     $(ulist).append('<li><a href="#">' + this.ontime + '</a> </li>'); 
@@ -520,7 +520,7 @@ function GetDimmers()
 
 function GetDimmersResponse(data) 
 {
-  console.log('Creating dimmers');
+  //console.log('Creating dimmers');
   var dimP = document.getElementById("dimmerpanel");    
   while ( dimP.hasChildNodes() ) { dimP.removeChild(dimP.firstChild); }
   
@@ -644,7 +644,7 @@ function GetDimmerStatus()
 
 function GetDimmerStatusResponse(data) 
 {
-  console.log('Updating dimmers');
+  //console.log('Updating dimmers');
   
   $.each(data, function() {
     if (this.isdimmer == 1)
@@ -725,5 +725,26 @@ function FromDimToMain()
                                    reverse: false
                                    });
 }
+
+
+function SetTimerTitle(recid)
+{
+  $.ajax({
+          type: 'GET',
+          url: serverURL+'receiver/'+recid,
+          //data: data,
+          success: function(data) {SetTimerTitleResponse(data);},
+          dataType: 'json'
+         });  
+}
+
+function SetTimerTitleResponse(data)
+{
+  var recName = data[0].name;
+  $("#timerpageheading").text(recName+" - Timers");
+}
+
+
+
 
 
