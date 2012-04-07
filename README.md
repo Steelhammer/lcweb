@@ -16,7 +16,7 @@ Reference web page for interacting with the lcapi
 
 * lcapi - php, restler (https://github.com/Luracast/Restler), apache, ubuntu 10.04
 
-* lightcontrol - html5, javascript, jquerymobile
+* lightcontrol - html5, javascript, jquerymobile, mobiscroll (https://github.com/acidb/mobiscroll)
 
 lightcontrol-web-install.txt contains instructions for getting started.
 
@@ -26,6 +26,6 @@ This is a project under initial development.
 
 * There is no documentation
 
-* No timer control in the lightcontrol web page.
+* Timer control in the lightcontrol web page, in progress.
 
 * The lcapi covers all functions but the timer functions are largely untested.
