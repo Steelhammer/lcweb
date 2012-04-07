@@ -27,8 +27,10 @@ $("#mainpanel").live("swiperight", function(){
                         $("#dimmerpage").trigger('create');
                         
                        });
-                       
-                       
+   
+                    
+  
+
                        
 
 function InitPage()
@@ -37,8 +39,36 @@ function InitPage()
   GetDimmers();
   GetReceiverSettings();
   
-   $('#addtimeron').scroller({ preset: 'time', ampm: false, timeFormat: 'HH:ii', theme: 'sense-ui' });
-   $('#addtimeroff').scroller({ preset: 'time', ampm: false, timeFormat: 'HH:ii', theme: 'sense-ui' });
+  $('#addtimeron').scroller({ preset: 'time', ampm: false, timeFormat: 'HH:ii', theme: 'sense-ui' });
+  $('#addtimeroff').scroller({ preset: 'time', ampm: false, timeFormat: 'HH:ii', theme: 'sense-ui' });
+   
+  $('#ontimecollapse').live('collapse',function(){
+      var $btn_text  = $('#ontimecollapse').find('.ui-collapsible-heading').find('.ui-btn-text');
+      //$btn_child = $btn_text.find('.ui-collapsible-heading-status');
+      //overwrite the header text, then append its child to restore the previous structure
+      var onTimeStr = GetTimerTimestamp('addtimeron');
+      
+      $btn_text.text("On time: "+onTimeStr);//.append($btn_child);
+      //+$('input:radio[name=addontimeformat]:checked').val()
+      
+      
+  });
+  
+  $('#ontimecollapse').live('expand',function(){
+      var $btn_text  = $('#ontimecollapse').find('.ui-collapsible-heading').find('.ui-btn-text');
+      $btn_text.text("On time");
+  });
+
+  $('#offtimecollapse').live('collapse',function(){
+      var $btn_text  = $('#offtimecollapse').find('.ui-collapsible-heading').find('.ui-btn-text');
+      var offTimeStr = GetTimerTimestamp('addtimeroff');
+      $btn_text.text("Off time: "+offTimeStr);
+  });
+  
+  $('#offtimecollapse').live('expand',function(){
+      var $btn_text  = $('#offtimecollapse').find('.ui-collapsible-heading').find('.ui-btn-text');
+      $btn_text.text("Off time");
+  });
   
 }
 
@@ -379,11 +409,55 @@ function AddReceiver()
 
 function AddTimer()
 {
-   $.mobile.changePage("#addtimerpage", {
+  $("#addtimeron").val("12:00");
+  //$('#addontime-time').trigger("click");
+  $('#addontime-time').attr('checked',true);
+  $("#addtimeronoffset").val(0);
+  $("#addtimerdimlevel").val(0);
+  $("#ontimecollapse").trigger('collapse');
+  
+  $("#addtimeroff").val("12:00");
+  $('#addofftime-time').attr('checked',true);
+  $("#addtimeroffoffset").val(0);
+  $("#offtimecollapse").trigger('collapse');
+  
+  $('input[name=addcheckbox-mo]').attr('checked', false);
+  $('input[name=addcheckbox-tu]').attr('checked', false);
+  $('input[name=addcheckbox-we]').attr('checked', false);
+  $('input[name=addcheckbox-th]').attr('checked', false);
+  $('input[name=addcheckbox-fr]').attr('checked', false);
+  $('input[name=addcheckbox-sa]').attr('checked', false);
+  $('input[name=addcheckbox-su]').attr('checked', false);
+
+  
+  
+  
+  $.mobile.changePage("#addtimerpage", {
                                               transition: "pop"
                                    
                                             });
+                                            
+  $('#addontime-time').checkboxradio("refresh");
+  $('#addofftime-time').checkboxradio("refresh");
+  $('#addcheckbox-mo').checkboxradio("refresh");
+  $('#addcheckbox-tu').checkboxradio("refresh");
+  $('#addcheckbox-we').checkboxradio("refresh");
+  $('#addcheckbox-th').checkboxradio("refresh");
+  $('#addcheckbox-fr').checkboxradio("refresh");
+  $('#addcheckbox-sa').checkboxradio("refresh");
+  $('#addcheckbox-su').checkboxradio("refresh");  
 }
+
+function DoAddTimer()
+{
+  //Check if checkbox is set
+  //$('input[name=foo]').is(':checked')
+  //$('input[name=foo]').attr('checked')
+}
+
+
+
+
 
 function GetTimers(receiverid)
 {
@@ -403,11 +477,24 @@ function GetTimersResponse(data, receiverid)
 {
   //console.log(data);
   
+  var theNav = document.createElement("div");
+  theNav.setAttribute('data-role', 'navbar');
+  $(theNav).addClass('ui-body-a');
+  var ulist = document.createElement("ul");
+  theNav.appendChild(ulist);
+  $(ulist).append('<li><a href="#">On</a> </li>'); 
+  $(ulist).append('<li><a href="#">Off</a> </li>');
+  $(ulist).append('<li><a href="#">Days</a> </li>');
+  $(ulist).append('<li><a href="#">Dimlevel</a> </li>');
+  $(ulist).append('<li><a href="#">&nbsp;</a> </li>');
+  $("#timerpanel").append(theNav); 
+  
   $.each(data, function() {
     //console.log('Creating timer');
   
     var theNav = document.createElement("div");
     theNav.setAttribute('data-role', 'navbar');
+    $(theNav).addClass('ui-body-b');
     var ulist = document.createElement("ul");
     ulist.id='navbar'+this.id;
     ulist.timid=this.id;
@@ -418,7 +505,7 @@ function GetTimersResponse(data, receiverid)
     $(ulist).append('<li><a href="#">' + this.offtime + '</a> </li>');
     $(ulist).append('<li><a href="#">' + this.days + '</a> </li>');
     $(ulist).append('<li><a href="#">' + this.dimlevel + '</a> </li>');
-    $(ulist).append('<li><a href="#" onClick="DeleteTimer('+this.id+','+receiverid+')">Delete</a> </li>');
+    $(ulist).append('<li><a href="#" onClick="DeleteTimer('+this.id+','+receiverid+')" data-theme="a">Delete</a> </li>');
     $("#timerpanel").append(theNav);     
     
   });
@@ -733,18 +820,41 @@ function SetTimerTitle(recid)
           type: 'GET',
           url: serverURL+'receiver/'+recid,
           //data: data,
-          success: function(data) {SetTimerTitleResponse(data);},
+          success: function(data) {$("#timerpageheading").text("Timers: "+data[0].name);},
           dataType: 'json'
          });  
 }
 
-function SetTimerTitleResponse(data)
+function GetTimerTimestamp(timeid)
 {
-  var recName = data[0].name;
-  $("#timerpageheading").text(recName+" - Timers");
+  var maintime = "#"+timeid;
+  var offset = maintime+"offset"; 
+  var maintimerstr = $(maintime).val();
+  var offset = $(offset).val();
+  var offsetstr = "";
+  
+  if (maintimerstr=="SUNSET" || maintimerstr=="SUNRISE")
+  {
+    if (offset > 0)
+    {
+      offsetstr = '+'+offset;
+    }
+    else if (offset < 0)
+    {
+      offsetstr = offset;
+    }
+  }
+  else
+  {
+    offset = Math.abs(offset);
+    if (offset > 0)
+    {
+      offsetstr = 'R'+offset;
+    }
+  }
+  maintimerstr = maintimerstr+offsetstr;
+  
+  return maintimerstr;
 }
-
-
-
 
 
