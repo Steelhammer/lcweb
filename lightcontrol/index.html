@@ -145,7 +145,7 @@
   </div><!-- /content -->
 
   <div data-role="content" class="ui-body ui-body-b">
-    <a href="#" data-role="button" data-inline="true" onclick="AddTimer()">New Timer</a>
+    <a href="#" id="addtimerbutton" data-role="button" data-inline="true" onclick="AddTimer()">New Timer</a>
     <a href="#" data-role="button" data-inline="true" onclick="FromTimerToSettings()">Close</a>  
   </div>
 
@@ -170,16 +170,8 @@
       <h3 id="ontimeheading">On time</h3>
       <label for="addtimeron">On time:</label>
       <input type="text" name="addtimeron" id="addtimeron" class="mobiscroll" readonly="readonly" value="12:00"/>
-      <div data-role="fieldcontain" id="radios">
-        <fieldset data-role="controlgroup" data-type="horizontal">
-          <input type="radio" name="addontimeformat" id="addontime-time" value="time" />
-          <label for="addontime-time">Abs</label>
-          <input type="radio" name="addontimeformat" id="addontime-sunset" value="SUNSET"  />
-          <label for="addontime-sunset">Set</label>
-          <input type="radio" name="addontimeformat" id="addontime-sunrise" value="SUNRISE"  />
-          <label for="addontime-sunrise">Rise</label>
-        </fieldset>
-      </div>
+      <a href="#" data-role="button" data-inline="true" onclick="AddTimerOnSunrise()">Sunrise</a>
+      <a href="#" data-role="button" data-inline="true" onclick="AddTimerOnSunset()">Sunset</a>
       <label for="addtimeronoffset">Offset/Random:</label>
       <input type="number" name="addtimeronoffset" id="addtimeronoffset" value="0" />
       <label for="addtimerdimlevel">Dim level:</label>
@@ -190,16 +182,8 @@
       <h3 id="offtimeheading">Off time</h3>
       <label for="addtimeroff">Off time:</label>
       <input type="text" name="addtimeroff" id="addtimeroff" class="mobiscroll" readonly="readonly" value="12:00"/>
-      <div data-role="fieldcontain">
-        <fieldset data-role="controlgroup" data-type="horizontal">
-          <input type="radio" name="addofftimeformat" id="addofftime-time" value="time" checked="checked" />
-          <label for="addofftime-time">Abs</label>
-          <input type="radio" name="addofftimeformat" id="addofftime-sunset" value="SUNSET"  />
-          <label for="addofftime-sunset">Set</label>
-          <input type="radio" name="addofftimeformat" id="addofftime-sunrise" value="SUNRISE"  />
-          <label for="addofftime-sunrise">Rise</label>
-        </fieldset>
-      </div>
+      <a href="#" data-role="button" data-inline="true" onclick="AddTimerOffSunrise()">Sunrise</a>
+      <a href="#" data-role="button" data-inline="true" onclick="AddTimerOffSunset()">Sunset</a>
       <label for="addtimeroffoffset">Offset/Random:</label>
       <input type="number" name="addtimeroffoffset" id="addtimeroffoffset" value="0" />
     </div>

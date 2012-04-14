@@ -411,7 +411,7 @@ function AddTimer()
 {
   $("#addtimeron").val("12:00");
   //$('#addontime-time').trigger("click");
-  $('#addontime-time').attr('checked',true);
+  //$('#addontime-time').attr('checked',true);
   $("#addtimeronoffset").val(0);
   $("#addtimerdimlevel").val(0);
   $("#ontimecollapse").trigger('collapse');
@@ -438,7 +438,7 @@ function AddTimer()
                                             });
                                             
   $('#addontime-time').checkboxradio("refresh");
-  $('#addofftime-time').checkboxradio("refresh");
+  //$('#addofftime-time').checkboxradio("refresh");
   $('#addcheckbox-mo').checkboxradio("refresh");
   $('#addcheckbox-tu').checkboxradio("refresh");
   $('#addcheckbox-we').checkboxradio("refresh");
@@ -448,20 +448,91 @@ function AddTimer()
   $('#addcheckbox-su').checkboxradio("refresh");  
 }
 
-function DoAddTimer()
+function AddTimerOnSunrise()
 {
-  //Check if checkbox is set
-  //$('input[name=foo]').is(':checked')
-  //$('input[name=foo]').attr('checked')
+  $("#addtimeron").val("SUNRISE");
 }
 
+function AddTimerOnSunset()
+{
+  $("#addtimeron").val("SUNSET");
+}
 
+function AddTimerOffSunrise()
+{
+  $("#addtimeroff").val("SUNRISE");
+}
 
+function AddTimerOffSunset()
+{
+  $("#addtimeroff").val("SUNSET");
+}
+
+function DoAddTimer()
+{
+  var onTimeStr = GetTimerTimestamp('addtimeron');
+  var dimLvl = $("#addtimerdimlevel").val();
+  var offTimeStr = GetTimerTimestamp('addtimeroff');
+  var theNewBtn = document.getElementById("addtimerbutton");
+  var recid = theNewBtn.getAttribute('recid');
+  var days = '';
+  if ($('input[name=addcheckbox-mo]').is(':checked'))
+  {
+    days = days + '1';
+  }
+  if ($('input[name=addcheckbox-tu]').is(':checked'))
+  {
+    days = days + '2';
+  }
+  if ($('input[name=addcheckbox-we]').is(':checked'))
+  {
+    days = days + '3';
+  }
+  if ($('input[name=addcheckbox-th]').is(':checked'))
+  {
+    days = days + '4';
+  }
+  if ($('input[name=addcheckbox-fr]').is(':checked'))
+  {
+    days = days + '5';
+  }
+  if ($('input[name=addcheckbox-sa]').is(':checked'))
+  {
+    days = days + '6';
+  }
+  if ($('input[name=addcheckbox-su]').is(':checked'))
+  {
+    days = days + '7';
+  }
+  
+  //console.log(recid);
+  //console.log(onTimeStr);
+  //console.log(dimLvl);
+  //console.log(offTimeStr);
+  //console.log(days);
+
+  $.ajax({
+            type: 'POST',
+            url: serverURL+'timer/',
+            data: {"recid" : recid, "ontime" : onTimeStr, "offtime" : offTimeStr, "days" : days, "dimlevel" : dimLvl},
+
+            success: function(data) {DoAddTimerResponse(data);},
+            error: function(jqXHR, textStatus, errorThrown) {alert(textStatus);},
+            dataType: 'json'
+           });
+}
+
+function DoAddTimerResponse(data)
+{
+  GetTimers(data.recid);
+}
 
 
 function GetTimers(receiverid)
 {
   SetTimerTitle(receiverid);      
+  var theNewBtn = document.getElementById("addtimerbutton");
+  theNewBtn.setAttribute('recid', receiverid);
   var mainP = document.getElementById("timerpanel");    
   while ( mainP.hasChildNodes() ) { mainP.removeChild(mainP.firstChild); }
     $.ajax({
@@ -488,6 +559,8 @@ function GetTimersResponse(data, receiverid)
   $(ulist).append('<li><a href="#">Dimlevel</a> </li>');
   $(ulist).append('<li><a href="#">&nbsp;</a> </li>');
   $("#timerpanel").append(theNav); 
+    
+  ulist.recid=this.recid;
   
   $.each(data, function() {
     //console.log('Creating timer');
@@ -530,11 +603,12 @@ function ViewTimer(recid)
 
 function FromTimerToSettings()
 {
+  
   $.mobile.changePage("#setpage", {
                                    transition: "pop"
                                    });
-                                   
-  GetReceiverSettings();
+  GetReceiverSettings();                           
+  
 }
 
 

@@ -43,7 +43,9 @@ class Timer {
     
     if($status[0] != 'OK')throw new RestException(400, $status[1]);
     
-    return $status[1];
+    $okstatus = explode(", ", $status[1]);
+    
+    return array("id" => $okstatus[0], "recid" => $okstatus[1]);
   }
   
   function put($id=NULL, $request_data=NULL)
