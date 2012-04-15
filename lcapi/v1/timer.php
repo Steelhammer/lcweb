@@ -43,9 +43,7 @@ class Timer {
     
     if($status[0] != 'OK')throw new RestException(400, $status[1]);
     
-    $okstatus = explode(", ", $status[1]);
-    
-    return array("id" => $okstatus[0], "recid" => $okstatus[1]);
+    return array("id" => $status[1]);
   }
   
   function put($id=NULL, $request_data=NULL)
@@ -61,7 +59,7 @@ class Timer {
     
     if($status[0] != 'OK')throw new RestException(400, $status[1]);
     
-    return $status[1];
+    return array("id" => $status[1]);
   }
   
   
@@ -76,7 +74,7 @@ class Timer {
     
     if($status[0] != 'OK')throw new RestException(400, $status[1]);
     
-    return $status[1];
+    return array("id" => $status[1]);
   }
   
   private function _validate_add($data)

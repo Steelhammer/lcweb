@@ -409,9 +409,9 @@ function AddReceiver()
 
 function AddTimer()
 {
+  $("#edittimerheading").text('New timer');
+
   $("#addtimeron").val("12:00");
-  //$('#addontime-time').trigger("click");
-  //$('#addontime-time').attr('checked',true);
   $("#addtimeronoffset").val(0);
   $("#addtimerdimlevel").val(0);
   $("#ontimecollapse").trigger('collapse');
@@ -428,17 +428,22 @@ function AddTimer()
   $('input[name=addcheckbox-fr]').attr('checked', false);
   $('input[name=addcheckbox-sa]').attr('checked', false);
   $('input[name=addcheckbox-su]').attr('checked', false);
-
   
+  $('#addedittimerokbtn').unbind('click');
+  $('#addedittimerokbtn').click(function() { DoAddTimer();});
   
+  var theNewBtn = document.getElementById("addtimerbutton");
+  var recid = theNewBtn.getAttribute('recid');
+  $('#addedittimercancelbtn').unbind('click');
+  $('#addedittimercancelbtn').click(function() { GetTimers(recid);});
   
+    
   $.mobile.changePage("#addtimerpage", {
                                               transition: "pop"
                                    
                                             });
                                             
-  $('#addontime-time').checkboxradio("refresh");
-  //$('#addofftime-time').checkboxradio("refresh");
+  //$('#addontime-time').checkboxradio("refresh");
   $('#addcheckbox-mo').checkboxradio("refresh");
   $('#addcheckbox-tu').checkboxradio("refresh");
   $('#addcheckbox-we').checkboxradio("refresh");
@@ -505,28 +510,157 @@ function DoAddTimer()
     days = days + '7';
   }
   
-  //console.log(recid);
-  //console.log(onTimeStr);
-  //console.log(dimLvl);
-  //console.log(offTimeStr);
-  //console.log(days);
-
   $.ajax({
             type: 'POST',
             url: serverURL+'timer/',
             data: {"recid" : recid, "ontime" : onTimeStr, "offtime" : offTimeStr, "days" : days, "dimlevel" : dimLvl},
 
-            success: function(data) {DoAddTimerResponse(data);},
+            success: function(data) {DoAddTimerResponse(data, recid);},
             error: function(jqXHR, textStatus, errorThrown) {alert(textStatus);},
             dataType: 'json'
            });
 }
 
-function DoAddTimerResponse(data)
+function DoAddTimerResponse(data, recid)
 {
-  GetTimers(data.recid);
+  GetTimers(recid);
 }
 
+function EditTimer(timercontainerid)
+{
+  var timerContainer = document.getElementById(timercontainerid);
+  
+  var timerid = timerContainer.timid;
+  var recid = timerContainer.recid;
+  var onTempTime = GetTimeStampComponents(timerContainer.ontime);
+  var onTimeTime = onTempTime[0];
+  var onTimeOffset = onTempTime[1];
+  var dimLvl = timerContainer.dimlvl;
+  var offTempTime = GetTimeStampComponents(timerContainer.offtime);
+  var offTimeTime = offTempTime[0];
+  var offTimeOffset = offTempTime[1];
+  var days = timerContainer.days;
+  
+  $("#edittimerheading").text('Edit timer');
+  
+  $("#addtimeron").val(onTimeTime);
+  $("#addtimeronoffset").val(onTimeOffset);
+  $("#addtimerdimlevel").val(dimLvl);
+  $("#ontimecollapse").trigger('collapse');
+  
+  $("#addtimeroff").val(offTimeTime);
+  $("#addtimeroffoffset").val(offTimeOffset);
+  $("#offtimecollapse").trigger('collapse');
+  
+  $('input[name=addcheckbox-mo]').attr('checked', false);
+  $('input[name=addcheckbox-tu]').attr('checked', false);
+  $('input[name=addcheckbox-we]').attr('checked', false);
+  $('input[name=addcheckbox-th]').attr('checked', false);
+  $('input[name=addcheckbox-fr]').attr('checked', false);
+  $('input[name=addcheckbox-sa]').attr('checked', false);
+  $('input[name=addcheckbox-su]').attr('checked', false);
+  if (days.search(/1/)>=0)
+  {
+    $('input[name=addcheckbox-mo]').attr('checked', true);
+  }
+  if (days.search(/2/)>=0)
+  {
+    $('input[name=addcheckbox-tu]').attr('checked', true);
+  }
+  if (days.search(/3/)>=0)
+  {
+    $('input[name=addcheckbox-we]').attr('checked', true);
+  }
+  if (days.search(/4/)>=0)
+  {
+    $('input[name=addcheckbox-th]').attr('checked', true);
+  }
+  if (days.search(/5/)>=0)
+  {
+    $('input[name=addcheckbox-fr]').attr('checked', true);
+  }
+  if (days.search(/6/)>=0)
+  {
+    $('input[name=addcheckbox-sa]').attr('checked', true);
+  }
+  if (days.search(/7/)>=0)
+  {
+    $('input[name=addcheckbox-su]').attr('checked', true);
+  }
+  
+  $('#addedittimerokbtn').unbind('click');
+  $('#addedittimerokbtn').click(function() { DoEditTimer(timerid);});
+  
+  var theNewBtn = document.getElementById("addtimerbutton");
+  var recid = theNewBtn.getAttribute('recid');
+  $('#addedittimercancelbtn').unbind('click');
+  $('#addedittimercancelbtn').click(function() { GetTimers(recid);});
+    
+  $.mobile.changePage("#addtimerpage", {
+                                              transition: "pop"
+                                   
+                                            });
+                                            
+  $('#addcheckbox-mo').checkboxradio("refresh");
+  $('#addcheckbox-tu').checkboxradio("refresh");
+  $('#addcheckbox-we').checkboxradio("refresh");
+  $('#addcheckbox-th').checkboxradio("refresh");
+  $('#addcheckbox-fr').checkboxradio("refresh");
+  $('#addcheckbox-sa').checkboxradio("refresh");
+  $('#addcheckbox-su').checkboxradio("refresh");
+}
+
+function DoEditTimer(timerid)
+{
+  var onTimeStr = GetTimerTimestamp('addtimeron');
+  var dimLvl = $("#addtimerdimlevel").val();
+  var offTimeStr = GetTimerTimestamp('addtimeroff');
+  var theNewBtn = document.getElementById("addtimerbutton");
+  var recid = theNewBtn.getAttribute('recid');
+  var days = '';
+  if ($('input[name=addcheckbox-mo]').is(':checked'))
+  {
+    days = days + '1';
+  }
+  if ($('input[name=addcheckbox-tu]').is(':checked'))
+  {
+    days = days + '2';
+  }
+  if ($('input[name=addcheckbox-we]').is(':checked'))
+  {
+    days = days + '3';
+  }
+  if ($('input[name=addcheckbox-th]').is(':checked'))
+  {
+    days = days + '4';
+  }
+  if ($('input[name=addcheckbox-fr]').is(':checked'))
+  {
+    days = days + '5';
+  }
+  if ($('input[name=addcheckbox-sa]').is(':checked'))
+  {
+    days = days + '6';
+  }
+  if ($('input[name=addcheckbox-su]').is(':checked'))
+  {
+    days = days + '7';
+  }
+
+  $.ajax({
+            type: 'PUT',
+            url: serverURL+'timer/'+timerid,
+            data: {"ontime" : onTimeStr, "offtime" : offTimeStr, "days" : days, "dimlevel" : dimLvl},
+            success: function(data) {DoEditTimerResponse(data, recid);},
+            error: function(jqXHR, textStatus, errorThrown) {alert(textStatus);},
+            dataType: 'json'
+           });
+}
+
+function DoEditTimerResponse(data, recid)
+{
+  GetTimers(recid);
+}
 
 function GetTimers(receiverid)
 {
@@ -571,13 +705,18 @@ function GetTimersResponse(data, receiverid)
     var ulist = document.createElement("ul");
     ulist.id='navbar'+this.id;
     ulist.timid=this.id;
+    ulist.ontime=this.ontime;
+    ulist.dimlvl=this.dimlevel;
+    ulist.offtime=this.offtime;
+    ulist.days=this.days;
+    ulist.recid=receiverid;
     //console.log(this.id);
     theNav.appendChild(ulist);
     var idstr='#'+ulist.id;
-    $(ulist).append('<li><a href="#">' + this.ontime + '</a> </li>'); 
-    $(ulist).append('<li><a href="#">' + this.offtime + '</a> </li>');
-    $(ulist).append('<li><a href="#">' + this.days + '</a> </li>');
-    $(ulist).append('<li><a href="#">' + this.dimlevel + '</a> </li>');
+    $(ulist).append('<li><a href="#" onClick="EditTimer(\''+ulist.id+'\')">' + this.ontime + '</a> </li>'); 
+    $(ulist).append('<li><a href="#" onClick="EditTimer(\''+ulist.id+'\')">' + this.offtime + '</a> </li>');
+    $(ulist).append('<li><a href="#" onClick="EditTimer(\''+ulist.id+'\')">' + this.days + '</a> </li>');
+    $(ulist).append('<li><a href="#" onClick="EditTimer(\''+ulist.id+'\')">' + this.dimlevel + '</a> </li>');
     $(ulist).append('<li><a href="#" onClick="DeleteTimer('+this.id+','+receiverid+')" data-theme="a">Delete</a> </li>');
     $("#timerpanel").append(theNav);     
     
@@ -665,7 +804,6 @@ function DoAddReceiverResponse(data)
   UpdateReceivers();
   
 }
-
 
 
 function GetDimmers()
@@ -782,8 +920,8 @@ function DoDimReceiverResponse(data)
   var receiverid = data[0].id;
   var status = data[0].status;
   
-  console.log(receiverid);
-  console.log(status);
+  //console.log(receiverid);
+  //console.log(status);
 
   //UpdateReceivers();
   
@@ -929,6 +1067,24 @@ function GetTimerTimestamp(timeid)
   maintimerstr = maintimerstr+offsetstr;
   
   return maintimerstr;
+}
+
+function GetTimeStampComponents(timeStampStr)
+{
+  var mstr = timeStampStr.match(/(\d{1,2}:\d\d|SUNRISE|SUNSET)(\+|-|R|)(\d*)/i)
+  
+  var fixTime = mstr[1];
+  var offset = "0";
+  if (mstr[3] != "")
+  {
+    offset = "";
+    if (mstr[2] == "-")
+    {
+      offset = "-";
+    }
+    offset = offset + mstr[3];
+  }
+  return [fixTime, offset];
 }
 
 
