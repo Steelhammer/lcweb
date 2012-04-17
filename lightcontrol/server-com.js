@@ -1,11 +1,14 @@
-//var serverURL = "http://www.your-server.com/lcweb/lcapi/v1/lcapi.php";
+//var serverURL = "http://www.your-server.com/lcweb/lcapi/v1/";
 var serverURL = "http://192.168.0.5/lcweb/lcapi/v1/";
 
 var t;
 
 $("#mainpanel").live("swipeleft", function(){
                         
-                        $.mobile.changePage("#setpage", 'slide');
+                        $.mobile.changePage("#setpage", {
+                                                         transition: "slide",
+                                                         reverse: false
+                                                         });
                         $("#settingspanel").trigger('create');
                        });
 
@@ -200,7 +203,7 @@ function LearnReceiverResponse(data)
   
 }
 
-function Dimmer(btnid)
+function Dimmer_not_used(btnid)
 {
 
 
@@ -285,10 +288,23 @@ function GetReceiversSettingsResponse(data)
   btn.setAttribute('data-icon', 'plus');
   btn.setAttribute("data-theme", "a");
   
-  tn = document.createTextNode("New receiver");
+  var tn = document.createTextNode("New receiver");
   btn.appendChild(tn);
   
   $("#settingspanel").append(btn);
+  
+  var logbtn = document.createElement("a");
+
+  logbtn.setAttribute('href', '#');
+  logbtn.onclick = ViewLog;
+  logbtn.setAttribute('data-role', 'button');
+  logbtn.setAttribute('data-icon', 'info');
+  logbtn.setAttribute("data-theme", "a");
+  
+  var logtn = document.createTextNode("View log");
+  logbtn.appendChild(logtn);
+  
+  $("#settingspanel").append(logbtn);
   
   //console.log($('.ui-page-active').attr('id'));
 
@@ -1036,6 +1052,37 @@ function SetTimerTitle(recid)
           dataType: 'json'
          });  
 }
+
+function ViewLog()
+{           
+  $.ajax({
+          type: 'GET',
+          url: serverURL+'logger/25',
+          //data: data,
+          success: function(data) {ViewLogResponse(data);},
+          dataType: 'json'
+         });          
+}
+
+function ViewLogResponse(data) 
+{
+  var logText = data.log;
+  
+  var logP = document.getElementById("viewlogpanel");    
+  while ( logP.hasChildNodes() ) { logP.removeChild(logP.firstChild); }
+  
+  $("#viewlogpanel").append("<pre>" + logText + "</pre>");
+  $("#viewlogpanel").append('<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>');
+  
+  
+  $.mobile.changePage("#viewlogpage", {
+                                   transition: "slidedown"
+                                   });
+                                   
+  $("#viewlogpanel").trigger('create');
+}
+
+
 
 function GetTimerTimestamp(timeid)
 {

@@ -1,6 +1,3 @@
-
-
-
 <?php
 class Logger {
   
@@ -14,7 +11,7 @@ class Logger {
     }
     $loglines = `exec 2>&1;lccmd $commandStr`;
     
-    return $loglines;
+    return array('log' => $loglines);
   }
 }
 ?>
