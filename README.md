@@ -26,6 +26,5 @@ This is a project under initial development.
 
 * There is no documentation
 
-* Timer control in the lightcontrol web page, in progress.
+* Timer control in the lightcontrol web page, untested.
 
-* The lcapi covers all functions but the timer functions are largely untested.
