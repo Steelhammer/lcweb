@@ -4,7 +4,7 @@ lightcontrol web installation
 make a link from your web structure to .../lcweb
 
 edit the first line of .../web/lightcontrol/server-com.js
-change "http://www.your-server.com/lcweb/lcapi/v1/lcapi.php" to match the location on your server.
+change "http://www.your-server.com/lcweb/lcapi/v1/" to match the location on your server.
 
 access the lightcontrol control page from <your-server-location>/lcweb/lightcontrol
 
