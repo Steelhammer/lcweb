@@ -1,41 +1,13 @@
 //var serverURL = "http://www.your-server.com/lcweb/lcapi/v1/";
 var serverURL = "http://192.168.0.5/lcweb/lcapi/v1/";
 
+
 var t;
 
-$("#mainpanel").live("swipeleft", function(){
-                        
-                        $.mobile.changePage("#setpage", {
-                                                         transition: "slide",
-                                                         reverse: false
-                                                         });
-                        $("#settingspanel").trigger('create');
-                       });
-
-
-
-$("#settingspanel").live("swiperight", function(){
-                        $.mobile.changePage("#thepage", {
-                                                         transition: "slide",
-                                                         reverse: true
-                                                         });
-                       });
-
-$("#mainpanel").live("swiperight", function(){
-                        GetDimmerStatus();
-                        $.mobile.changePage("#dimmerpage", {
-                                                         transition: "slide",
-                                                         reverse: true
-                                                         });
-                        $("#dimmerpage").trigger('create');
-                        
-                       });
+$("#mainpanel").live("swipeleft", function(){FromMainToSettings()});
+$("#settingspanel").live("swiperight", function(){FromSettingsToMain()});
+$("#mainpanel").live("swiperight", function(){FromMainToDimmer()});
    
-                    
-  
-
-                       
-
 function InitPage()
 {
   GetReceivers();
@@ -1134,4 +1106,30 @@ function GetTimeStampComponents(timeStampStr)
   return [fixTime, offset];
 }
 
+function FromMainToSettings()
+{
+  $.mobile.changePage("#setpage", {
+                                   transition: "slide",
+                                   reverse: false
+                                   });
+  $("#settingspanel").trigger('create');
+}
+
+function FromMainToDimmer()
+{
+  GetDimmerStatus();
+  $.mobile.changePage("#dimmerpage", {
+                                      transition: "slide",
+                                      reverse: true
+                                      });
+  $("#dimmerpage").trigger('create');
+}
+
+function FromSettingsToMain()
+{
+  $.mobile.changePage("#thepage", {
+                                   transition: "slide",
+                                   reverse: true
+                                   });
+}
 

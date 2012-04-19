@@ -11,8 +11,9 @@ div.ui-slider {
  padding-bottom:5px;
 }
 
-[select]
-{
-  padding-bottom:10px;
+@media only screen and (max-width: 399px) {
+  /* rules that only apply for canvases narrower than 400px */
+  #thepage .ui-header a, #setpage .ui-header a, #dimmerpage .ui-header a {
+	  display: none;
+  }
 }
-

@@ -28,7 +28,9 @@
 
 
   <div data-role="header" onclick="GetReceiverStatus()">
+    <a href="#" data-icon="arrow-l" onclick="FromMainToDimmer()">Dimmer</a>
     <h1>Light control</h1>
+    <a href="#" data-icon="arrow-r" data-iconpos="right" onclick="FromMainToSettings()">Settings</a>
   </div><!-- /header -->
 
   <div data-role="content" id="mainpanel"> 
@@ -42,6 +44,7 @@
 <div data-role="page" id="setpage">
 
   <div data-role="header">
+    <a href="#" data-icon="arrow-l" onclick="FromSettingsToMain()">Back</a>
     <h1>Settings</h1>
   </div><!-- /header -->
 
@@ -118,6 +121,7 @@
 
   <div data-role="header">
     <h1>Dimmer</h1>
+    <a href="#" data-icon="arrow-r" class="ui-btn-right" onclick="FromDimToMain()">Back</a>
   </div><!-- /header -->
 
   <div data-role="content" id="dimmerpanel" class="ui-body ui-body-b">
