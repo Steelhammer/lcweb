@@ -51,6 +51,7 @@ function UpdateReceivers()
 {
   GetReceivers();
   GetReceiverSettings();
+  GetDimmers();
 }
 
 function GetReceivers()
