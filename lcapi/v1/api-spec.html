@@ -1,0 +1,186 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<title>lcapi documentation</title>
+<meta charset="UTF-8">
+</head>
+<body>
+<h1>lcapi specification - v1</h1>
+<hr />
+<p>The lcapi is a REST API, to control the lightcontrol command line tool through the web.</p>
+<p>Commands are sent using the  resources, http verbs and JSON data.</p>
+
+<h1>Resource <b>receiver</b></h1>
+<table border="1">
+<tr>
+<th>Resource</th>
+<th>GET</th>
+<th>PUT</th>
+<th>POST</th>
+<th>DELETE</th>
+</tr>
+<tr>
+<th>Collection URI, such as <code>http://site/lcweb/lcapi/v1/receiver/</code></th>
+<td><b>List</b> the receivers as an array of <a href="#receiverjsonformat">JSON objects</a>.</td>
+<td>N/A</td>
+<td><b>Create</b> a new receiver based of the supplied <a href="#createreceiverjsonformat">JSON object</a>. Returns the created receiver as a <a href="#receiverjsonformat">JSON object</a>.</td>
+<td>N/A</td>
+</tr>
+<tr>
+<th>Element URI, such as <code>http://site/lcweb/lcapi/v1/receiver/12</code></th>
+<td><b>Retrieve</b> a <a href="#receiverjsonformat">JSON representation</a> of the addressed receiver.</td>
+<td><b>Update</b> the addressed receiver based of the supplied <a href="#editreceiverjsonformat">JSON object</a>. Returns the updated receiver as a <a href="#receiverjsonformat">JSON object</a>.</td>
+<td>N/A</td>
+<td><b>Delete</b> the addressed receiver.</td>
+</tr>
+</table>
+
+<h2>Receiver attributes</h2>
+<pre>
+* id       - id of the receiver in the database
+* name     - Logical name given by the user, e.g. 'Bedroom - window'
+* house    - Internal id to connect to the receiver HW
+* unit     - Internal id to connect to the receiver HW
+* isdimmer - Reciver HW supports dimming
+* status   - On/Off/Dimmed: &lt;level&gt;
+* learned  - Receiver setting is connected to at least one receiver HW
+* level    - Dimmer level (0-15)
+</pre>
+
+<h2 id="receiverjsonformat">Receiver JSON format</h2>
+<pre>
+[{
+    "id": "1",
+    "name": "Name A",
+    "house": "352228",
+    "unit": "11",
+    "isdimmer": "0",
+    "status": "Off",
+    "learned": "1"
+}]
+</pre>
+
+<h2 id="createreceiverjsonformat">Create receiver JSON format</h2>
+<pre>
+[{
+    "name": "Name B",
+    "isdimmer": "1"
+}]
+</pre>
+
+<h2 id="editreceiverjsonformat">Update receiver JSON format</h2>
+<h3>Edit receiver settings</h3>
+<pre>
+[{
+    "name": "Name C",
+    "isdimmer": "0"
+}]
+</pre>
+<h3>Activate/Deactivate receiver</h3>
+<pre>
+[{
+    "command": "on" //off
+}]
+</pre>
+<h3>Dim receiver</h3>
+<pre>
+[{
+    "command": "dim",
+    "level" : 8
+}]
+</pre>
+<h3>Send learn command to receiver HW</h3>
+<pre>
+[{
+    "command": "learn"
+}]
+</pre>
+
+
+
+<h1>Resource <b>timer</b></h1>
+<table border="1">
+<tr>
+<th>Resource</th>
+<th>GET</th>
+<th>PUT</th>
+<th>POST</th>
+<th>DELETE</th>
+</tr>
+<tr>
+<th>Collection URI, such as <code>http://site/lcweb/lcapi/v1/timer/</code></th>
+<td><b>List</b> all timers as an array of <a href="#timerjsonformat">JSON objects</a>.</td>
+<td>N/A</td>
+<td><b>Create</b> a new timer.</td>
+<td>N/A</td>
+</tr>
+<tr>
+<th>Element URI, such as <code>http://site/lcweb/lcapi/v1/timer/18</code></th>
+<td><b>Retrieve</b> the timers associated with the addressed <i>reveicer</i> as an array of <a href="#timerjsonformat">JSON objects</a>.</td>
+<td><b>Update</b> the addressed timer.</td>
+<td>N/A</td>
+<td><b>Delete</b> the addressed timer.</td>
+</tr>
+</table>
+
+<h2>Timer attributes</h2>
+<pre>
+* id       - id of the timer in the database
+* recid    - id of the receiver affected by the timer
+* ontime   - time to activate the receiver
+             Formats accepted:
+               12:00 (fixed time)
+               12:00R30 (12:00+Random(30) minutes, i.e. 12:01-12:30)
+               SUNSET (Sunset time calculated by calendar and coordinates)
+               SUNRISE
+               SUNSET+30 (30 minutes after sunset time)
+               SUNSET-60 (1 hour before sundet time)
+* offtime  - time to deactivate the receiver
+             Formats, see ontime
+* days     - days of the week the timer is active e.g. 1234567 (all days), 67 (Saturday and Sunday) 
+* dimlevel - dimmer level to use when activating the timer (0-15)
+</pre>
+
+<h2 id="timerjsonformat">Timer JSON format</h2>
+<pre>
+[{
+    "id": "5",
+    "recid": "1",
+    "ontime": "20:00",
+    "offtime": "23:10",
+    "days": "1234567",
+    "dimlevel": "6"
+}]
+</pre>
+
+
+
+
+
+<h1>Resource <b>logger</b></h1>
+<table border="1">
+<tr>
+<th>Resource</th>
+<th>GET</th>
+<th>PUT</th>
+<th>POST</th>
+<th>DELETE</th>
+</tr>
+<tr>
+<th>Collection URI, such as<br /> <code>http://site/lcweb/lcapi/v1/logger/</code></th>
+<td><b>Retrieve</b> the last 10 lines of the log in reverse order.</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<th>Element URI, such as<br /> <code>http://site/lcweb/lcapi/v1/logger/20</code></th>
+<td><b>Retrieve</b> the last &lt;addressed&gt; lines of the log in reverse order.</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</table>
+
+</body>
+</html>
