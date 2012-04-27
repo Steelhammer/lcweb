@@ -23,13 +23,13 @@
 <th>Collection URI, such as <code>http://site/lcweb/lcapi/v1/receiver/</code></th>
 <td><b>List</b> the receivers as an array of <a href="#receiverjsonformat">JSON objects</a>.</td>
 <td>N/A</td>
-<td><b>Create</b> a new receiver based of the supplied <a href="#createreceiverjsonformat">JSON object</a>. Returns the created receiver as a <a href="#receiverjsonformat">JSON object</a>.</td>
+<td><b>Create</b> a new receiver based on the supplied <a href="#createreceiverjsonformat">JSON object</a>. Returns the created receiver as a <a href="#receiverjsonformat">JSON object</a>.</td>
 <td>N/A</td>
 </tr>
 <tr>
 <th>Element URI, such as <code>http://site/lcweb/lcapi/v1/receiver/12</code></th>
 <td><b>Retrieve</b> a <a href="#receiverjsonformat">JSON representation</a> of the addressed receiver.</td>
-<td><b>Update</b> the addressed receiver based of the supplied <a href="#editreceiverjsonformat">JSON object</a>. Returns the updated receiver as a <a href="#receiverjsonformat">JSON object</a>.</td>
+<td><b>Update</b> the addressed receiver based on the supplied <a href="#editreceiverjsonformat">JSON object</a>. Returns the updated receiver as a <a href="#receiverjsonformat">JSON object</a>.</td>
 <td>N/A</td>
 <td><b>Delete</b> the addressed receiver.</td>
 </tr>
@@ -62,38 +62,38 @@
 
 <h2 id="createreceiverjsonformat">Create receiver JSON format</h2>
 <pre>
-[{
+{
     "name": "Name B",
     "isdimmer": "1"
-}]
+}
 </pre>
 
 <h2 id="editreceiverjsonformat">Update receiver JSON format</h2>
 <h3>Edit receiver settings</h3>
 <pre>
-[{
+{
     "name": "Name C",
     "isdimmer": "0"
-}]
+}
 </pre>
 <h3>Activate/Deactivate receiver</h3>
 <pre>
-[{
+{
     "command": "on" //off
-}]
+}
 </pre>
 <h3>Dim receiver</h3>
 <pre>
-[{
+{
     "command": "dim",
     "level" : 8
-}]
+}
 </pre>
 <h3>Send learn command to receiver HW</h3>
 <pre>
-[{
+{
     "command": "learn"
-}]
+}
 </pre>
 
 
@@ -111,13 +111,13 @@
 <th>Collection URI, such as <code>http://site/lcweb/lcapi/v1/timer/</code></th>
 <td><b>List</b> all timers as an array of <a href="#timerjsonformat">JSON objects</a>.</td>
 <td>N/A</td>
-<td><b>Create</b> a new timer.</td>
+<td><b>Create</b> a new timer based on the supplied <a href="#createtimerjsonformat">JSON object</a>. Retunrs the id of the created timer.</td>
 <td>N/A</td>
 </tr>
 <tr>
 <th>Element URI, such as <code>http://site/lcweb/lcapi/v1/timer/18</code></th>
 <td><b>Retrieve</b> the timers associated with the addressed <i>reveicer</i> as an array of <a href="#timerjsonformat">JSON objects</a>.</td>
-<td><b>Update</b> the addressed timer.</td>
+<td><b>Update</b> the addressed timer based on the supplied <a href="#updatetimerjsonformat">JSON object</a>. Retunrs the id of the updated timer.</td>
 <td>N/A</td>
 <td><b>Delete</b> the addressed timer.</td>
 </tr>
@@ -138,7 +138,7 @@
 * offtime  - time to deactivate the receiver
              Formats, see ontime
 * days     - days of the week the timer is active e.g. 1234567 (all days), 67 (Saturday and Sunday) 
-* dimlevel - dimmer level to use when activating the timer (0-15)
+* dimlevel - dimmer level to use when activating the timer (0-15), 0 is don't use dimming, turn on full (same as dim level 15) 
 </pre>
 
 <h2 id="timerjsonformat">Timer JSON format</h2>
@@ -153,11 +153,30 @@
 }]
 </pre>
 
+<h2 id="createtimerjsonformat">Create Timer JSON format</h2>
+<pre>
+{
+    "recid": "1",
+    "ontime": "18:00",
+    "offtime": "22:00",
+    "days": "1234567",
+    "dimlevel": "0"
+}
+</pre>
+
+<h2 id="updatetimerjsonformat">Update Timer JSON format</h2>
+<pre>
+{
+    "id": "9",
+    "ontime": "18:00",
+    "offtime": "21:00",
+    "days": "12345",
+    "dimlevel": "0"
+}
+</pre>
 
 
-
-
-<h1>Resource <b>logger</b></h1>
+<h1>Resource logger</h1>
 <table border="1">
 <tr>
 <th>Resource</th>
