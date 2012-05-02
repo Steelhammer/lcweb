@@ -161,6 +161,7 @@ require_once '../restler/restler.php';
 require_once 'receiver.php';
 require_once 'timer.php';
 require_once 'logger.php';
+require_once 'status.php';
 
 #set autoloader
 #do not use spl_autoload_register with out parameter
@@ -171,4 +172,5 @@ $r = new Restler();
 $r->addAPIClass('Receiver');
 $r->addAPIClass('Timer');
 $r->addAPIClass('Logger');
+$r->addAPIClass('Status');
 $r->handle();

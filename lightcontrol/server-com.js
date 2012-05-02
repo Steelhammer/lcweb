@@ -45,6 +45,7 @@ function InitPage()
       $btn_text.text("Off time");
   });
   
+  RequestStatusUpdate();
 }
 
 function UpdateReceivers()
@@ -1133,4 +1134,73 @@ function FromSettingsToMain()
                                    reverse: true
                                    });
 }
+
+function RequestStatusUpdate()
+{  
+  var maxRequestTime = 10 * 60 * 1000; // 10 minutes in milliseconds
+  
+  $.ajax({
+          type: 'GET',
+          url: serverURL+'status/',
+          timeout: maxRequestTime,
+          success: function(data) {RequestStatusUpdateResponse(data);},
+          error: function(jqXHR, textStatus, errorThrown) {RequestStatusUpdate();},
+          dataType: 'json'
+         });
+
+}
+
+function RequestStatusUpdateResponse(data)
+{
+  var updateStatus = data.update;
+
+  console.log('Status update: '+updateStatus);
+
+  if (updateStatus.toLowerCase() == 'settings updated')
+  {
+    UpdateReceivers();
+  }
+  else if (updateStatus.toLowerCase() == 'status updated')
+  {
+    UpdateStatus();
+  }
+  RequestStatusUpdate();
+}
+
+function UpdateStatus()
+{
+  $.ajax({
+          type: 'GET',
+          url: serverURL+'receiver/',
+          success: function(data) {UpdateStatusResponse(data);},
+          error: function(jqXHR, textStatus, errorThrown) {alert(errorThrown);},
+          dataType: 'json'
+         });
+
+}
+
+function UpdateStatusResponse(data)
+{
+  $.each(data, function() {
+    //var recElem = document.getElementById(this.id);
+    var recidtag = '#'+this.id;
+    
+    if (this.status.toLowerCase() != 'off')
+    {
+      $(recidtag).attr("data-theme", "e");
+      $(recidtag).removeClass("ui-btn-up-a").removeClass("ui-btn-up-e").removeClass("ui-btn-hover-a").removeClass("ui-btn-hover-e");
+      $(recidtag).addClass("ui-btn-up-e");
+    }
+    else
+    {
+      $(recidtag).attr("data-theme", "a");
+      $(recidtag).removeClass("ui-btn-up-a").removeClass("ui-btn-up-e").removeClass("ui-btn-hover-a").removeClass("ui-btn-hover-e");
+      $(recidtag).addClass("ui-btn-up-a");
+      
+    }
+  });
+  GetDimmers();
+  RequestStatusUpdate();
+}
+
 
