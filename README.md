@@ -2,6 +2,8 @@
 
 Web wrapper for the lightcontrol tools. https://github.com/Steelhammer/lightcontrol
 
+See http://steelhammer.github.com/lcweb/ for some more info and screenshots.
+
 ## Tools
 
 ### lcapi
