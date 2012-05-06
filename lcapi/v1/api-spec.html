@@ -201,5 +201,51 @@
 </tr>
 </table>
 
+<h1>Resource status</h1>
+<table border="1">
+<tr>
+<th>Resource</th>
+<th>GET</th>
+<th>PUT</th>
+<th>POST</th>
+<th>DELETE</th>
+</tr>
+<tr>
+<th>Collection URI, such as<br /> <code>http://site/lcweb/lcapi/v1/status/</code></th>
+<td><b>Retrieve</b> information regarding updates on the server. The update status is returned as a <a href="#statusupdatejsonformat">JSON object</a></td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<th>Element URI, such as<br /> <code>http://site/lcweb/lcapi/v1/status/20</code></th>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</table>
+
+<h2>Status update</h2>
+<p>
+The status request will return when status has been updated, after the time of the request. If no updates are made, the request will return 'No update' after 30 minutes, at which time the client must renew the request if still interested in status updates.
+</p>
+<p>
+The status update, can have the following values.
+</p>
+<pre>
+* Status updated   - Status of the receivers changed, i.e. a receiver activated, deactivated or dimmed.
+* Settings updated - Receiver/Timer settings updated, e.g. Receiver added/deleted/renamed
+                                                           Timer added/deleted/edited
+* No update        - No change for 30 minutes after the request was made.
+</pre>
+
+<h2 id="statusupdatejsonformat">Status update JSON format</h2>
+<pre>
+{
+    "update": "Settings updated"
+}
+</pre>
+
 </body>
 </html>
