@@ -7,7 +7,7 @@ class Status {
     
     $cmdtime = time();
     $commandStr = "--checkforupdate ".$cmdtime;  
-    $endtime = time() + 3*60;
+    $endtime = time() + 30*60;
     
     do 
     {
@@ -22,7 +22,7 @@ class Status {
       {
         return array('update' => $status[1]);
       }
-      sleep(10);
+      sleep(5);
     } while ($endtime > time());
     return array('update' => 'No update');
   }

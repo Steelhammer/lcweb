@@ -1137,7 +1137,9 @@ function FromSettingsToMain()
 
 function RequestStatusUpdate()
 {  
-  var maxRequestTime = 10 * 60 * 1000; // 10 minutes in milliseconds
+  var maxRequestTime = 40 * 60 * 1000; // 40 minutes in milliseconds
+  
+  console.log('Requesting status update');
   
   $.ajax({
           type: 'GET',
@@ -1182,7 +1184,11 @@ function UpdateStatus()
 function UpdateStatusResponse(data)
 {
   $.each(data, function() {
-    //var recElem = document.getElementById(this.id);
+    var recId = this.id;
+    var recStatus = this.status;
+
+    var recElem = document.getElementById(recId);
+    recElem.recstatus=recStatus;
     var recidtag = '#'+this.id;
     
     if (this.status.toLowerCase() != 'off')
@@ -1200,7 +1206,6 @@ function UpdateStatusResponse(data)
     }
   });
   GetDimmers();
-  RequestStatusUpdate();
 }
 
 
