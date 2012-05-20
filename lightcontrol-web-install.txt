@@ -13,7 +13,7 @@ Note the hidden file: .htaccess in .../web/lcapi/v1
 
 apache setup
 ------------
-rewrite modoule must be active
+rewrite module must be active
 
 sudo a2enmod rewrite
 
